@@ -25,6 +25,8 @@ namespace MimicAPI.Migrations
 
                     b.Property<DateTime?>("Atualizado");
 
+                    b.Property<DateTime>("Criado");
+
                     b.Property<string>("Nome");
 
                     b.Property<int>("Pontuacao");

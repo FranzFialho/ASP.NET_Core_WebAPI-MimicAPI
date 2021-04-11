@@ -9,8 +9,8 @@ using MimicAPI.Database;
 namespace MimicAPI.Migrations
 {
     [DbContext(typeof(MimicContext))]
-    [Migration("20210410042727_BancoInicial")]
-    partial class BancoInicial
+    [Migration("20210411060228_BancoIncial")]
+    partial class BancoIncial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,8 @@ namespace MimicAPI.Migrations
                     b.Property<bool>("Ativo");
 
                     b.Property<DateTime?>("Atualizado");
+
+                    b.Property<DateTime>("Criado");
 
                     b.Property<string>("Nome");
 

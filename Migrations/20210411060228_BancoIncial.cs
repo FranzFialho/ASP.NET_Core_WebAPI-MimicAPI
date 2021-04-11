@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MimicAPI.Migrations
 {
-    public partial class BancoInicial : Migration
+    public partial class BancoIncial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +16,7 @@ namespace MimicAPI.Migrations
                     Nome = table.Column<string>(nullable: true),
                     Pontuacao = table.Column<int>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
+                    Criado = table.Column<DateTime>(nullable: false),
                     Atualizado = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
