@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MimicAPI.Helpers
+{
+    public class Paginacao
+    {
+
+        public int NumeroPagina { get; set; }
+        public int ResgistroPorPagina { get; set; }
+        public int TotalRegistro { get; set; }
+        public int TotalPaginas { get; set; }
+
+    }
+}
