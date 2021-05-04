@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MimicAPI.Database;
-using MimicAPI.Repositories;
-using MimicAPI.Repositories.Contracts;
+using MimicAPI.v1.Repositories;
+using MimicAPI.Repositories.v1.Contracts;
 using AutoMapper;
 using MimicAPI.Helpers;
 
@@ -43,6 +43,11 @@ namespace MimicAPI
             services.AddMvc();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IPalavraRepository, PalavraRepository>();
+            services.AddApiVersioning(cfg=>
+            {
+                cfg.ReportApiVersions = true;
+                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

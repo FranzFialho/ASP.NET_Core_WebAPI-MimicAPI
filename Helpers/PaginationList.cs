@@ -1,4 +1,4 @@
-﻿using MimicAPI.Models.DTO;
+﻿using MimicAPI.v1.Models.DTO;
 using System.Collections.Generic;
 
 namespace MimicAPI.Helpers
