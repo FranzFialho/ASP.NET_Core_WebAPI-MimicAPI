@@ -24,24 +24,45 @@ namespace MimicAPI.Controllers
         }
 
 
-        [Route("")]
-
-        [HttpGet]
+        [HttpGet("", Name ="ObterTodas")]
         public ActionResult ObterTodas([FromQuery] PalavraUrlQuery query)
         {
             var item = _repository.Obterpalavras(query);
 
-            if (item.Count == 0)
+            if (item.Results.Count == 0)
             {
                 return NotFound();
+            }         
+
+            var lista = _mapper.Map<PaginationList<Palavra>, PaginationList<PalavraDTO>>(item);
+
+            foreach (var palavra in lista.Results)
+            {
+                palavra.Links = new List<LinkDTO>();
+                palavra.Links.Add(new LinkDTO("self", Url.Link("ObterPalavra", new { id = palavra.Id }), "GET"));
+            
             }
+
+            lista.Links.Add(new LinkDTO("self", Url.Link("ObterTodas", query), "GET"));
 
             if (item.Paginacao != null)
             {
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
+
+                if (query.PagNumero + 1 <= item.Paginacao.TotalPaginas)
+                {
+                    var queryString = new PalavraUrlQuery() { PagNumero = query.PagNumero + 1, PagRegistro = query.PagRegistro, Data = query.Data };
+                    lista.Links.Add(new LinkDTO("next", Url.Link("ObterTodas", queryString), "GET"));
+                }
+
+                if (query.PagNumero - 1 > 0) 
+                {
+                    var queryString = new PalavraUrlQuery() { PagNumero = query.PagNumero - 1, PagRegistro = query.PagRegistro, Data = query.Data };
+                    lista.Links.Add(new LinkDTO("prev", Url.Link("ObterTodas", queryString), "GET"));
+                }
             }
-               
-            return Ok(item.ToList());
+            
+            return Ok(lista);
         }
 
 

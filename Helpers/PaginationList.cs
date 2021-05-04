@@ -1,15 +1,12 @@
-﻿using System;
+﻿using MimicAPI.Models.DTO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MimicAPI.Helpers
 {
-    public class PaginationList<T> : List<T>
+    public class PaginationList<T>
     {
-        internal readonly object paginacao;
-
+        public List<T> Results { get; set; } = new List<T>();      
         public Paginacao Paginacao { get; set; }
-
+        public List<LinkDTO> Links { get; set; } = new List<LinkDTO>();
     }
 }
