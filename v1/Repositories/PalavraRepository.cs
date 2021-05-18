@@ -69,11 +69,9 @@ namespace MimicAPI.v1.Repositories
             var palavra = Obter(id);
             palavra.Ativo = false;
 
-            _banco.Palavras.Find(palavra);
+            _banco.Palavras.Update(palavra);
             _banco.SaveChanges();
         }
-
-
 
     }
 }

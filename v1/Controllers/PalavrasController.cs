@@ -13,7 +13,8 @@ namespace MimicAPI.v1.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("1.1")]
 
     public class PalavrasController : ControllerBase
     {
@@ -26,7 +27,8 @@ namespace MimicAPI.v1.Controllers
             _mapper = mapper;
         }
 
-
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpGet("", Name = "ObterTodas")]
         public ActionResult ObterTodas([FromQuery] PalavraUrlQuery query)
         {
@@ -69,7 +71,8 @@ namespace MimicAPI.v1.Controllers
         }
 
 
-
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpGet("{id:int}", Name = "ObterPalavra")]
         public ActionResult Obter(int id)
         {
@@ -89,14 +92,15 @@ namespace MimicAPI.v1.Controllers
             return Ok(palavraDTO);
         }
 
-
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [Route("")]
         [HttpPost]
         public ActionResult Cadastrar([FromBody] Palavra palavra)
         {
             if (palavra == null) return BadRequest();
 
-            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);      
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
 
             palavra.Ativo = true;
             palavra.Criado = DateTime.Now;
@@ -111,19 +115,20 @@ namespace MimicAPI.v1.Controllers
         }
 
 
-
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpPut("{id:int}", Name = "AtualizarPalavra")]
         public ActionResult Atualizar(int id, [FromBody] Palavra palavra)
         {
-           
+
             var obj = _repository.Obter(id);
 
             if (obj == null) return NotFound();
-            
-            if (palavra == null) return BadRequest(); 
-            
+
+            if (palavra == null) return BadRequest();
+
             if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
-       
+
             palavra.Id = id;
             palavra.Ativo = obj.Ativo;
             palavra.Criado = obj.Criado;
@@ -138,8 +143,8 @@ namespace MimicAPI.v1.Controllers
         }
 
 
-
-        [HttpPut("{id:int}", Name = "DeletarPalavra")]
+        [MapToApiVersion("1.1")]
+        [HttpDelete("{id:int}", Name = "DeletarPalavra")]
         public ActionResult Deletar(int id)
         {
             var palavra = _repository.Obter(id);
