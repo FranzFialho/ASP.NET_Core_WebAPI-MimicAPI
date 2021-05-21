@@ -1,18 +1,18 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.PlatformAbstractions;
 using MimicAPI.Database;
-using MimicAPI.v1.Repositories;
-using MimicAPI.Repositories.v1.Contracts;
-using AutoMapper;
 using MimicAPI.Helpers;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using System.Linq;
 using MimicAPI.Helpers.Swagger;
+using MimicAPI.Repositories.v1.Contracts;
+using MimicAPI.v1.Repositories;
+using System.IO;
+using System.Linq;
 
 namespace MimicAPI
 {
@@ -63,8 +63,8 @@ namespace MimicAPI
                 {
                     Title = "MimicAPI - V2.0",
                     Version = "v2.0"
-                });    
-                
+                });
+
                 cfg.SwaggerDoc("v1.1", new Swashbuckle.AspNetCore.Swagger.Info()
                 {
                     Title = "MimicAPI - V1.1",
@@ -77,11 +77,17 @@ namespace MimicAPI
                     Version = "v1.0"
                 });
 
+                var CaminhoProjeto = PlatformServices.Default.Application.ApplicationBasePath;
+                var NomeProjeto = $"{PlatformServices.Default.Application.ApplicationName}.xml";
+                var CamimhoArquivoXMLComentario = Path.Combine(CaminhoProjeto, NomeProjeto);
+
+                cfg.IncludeXmlComments(CamimhoArquivoXMLComentario);
+
                 cfg.DocInclusionPredicate((docName, apiDesc) =>
                 {
                     var actionApiVersionModel = apiDesc.ActionDescriptor?.GetApiVersion();
-                    // would mean this action is unversioned and should be included everywhere
-                    if (actionApiVersionModel == null)
+                // would mean this action is unversioned and should be included everywhere
+                if (actionApiVersionModel == null)
                     {
                         return true;
                     }
@@ -94,7 +100,7 @@ namespace MimicAPI
 
                 cfg.OperationFilter<ApiVersionOperationFilter>();
             });
-           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

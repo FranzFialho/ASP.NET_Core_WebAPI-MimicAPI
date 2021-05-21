@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MimicAPI.Helpers;
+using MimicAPI.Repositories.v1.Contracts;
 using MimicAPI.v1.Models;
 using MimicAPI.v1.Models.DTO;
-using MimicAPI.Repositories.v1.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MimicAPI.v1.Controllers
 {
@@ -28,6 +27,11 @@ namespace MimicAPI.v1.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Operação que pega do banco de dados todas as palvras existentes
+        /// </summary>
+        /// <param name="query">Filtros de pesquisa</param>
+        /// <returns>Listagem de palavras</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("1.1")]
         [HttpGet("", Name = "ObterTodas")]
@@ -71,7 +75,11 @@ namespace MimicAPI.v1.Controllers
             return Ok(lista);
         }
 
-
+        /// <summary>
+        /// Operção que busca uma unica palavra da base de dados
+        /// </summary>
+        /// <param name="id">Id da palavra</param>
+        /// <returns>Um objeto de palavra</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("1.1")]
         [HttpGet("{id:int}", Name = "ObterPalavra")]
@@ -93,6 +101,11 @@ namespace MimicAPI.v1.Controllers
             return Ok(palavraDTO);
         }
 
+        /// <summary>
+        /// Operação que realiza o cadastro da palavra
+        /// </summary>
+        /// <param name="palavra">Um objeto palavra</param>
+        /// <returns>Um obejto Palavra com seu Id</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("1.1")]
         [Route("")]
@@ -116,6 +129,12 @@ namespace MimicAPI.v1.Controllers
         }
 
 
+        /// <summary>
+        /// Operação que realiza a substituição de dados de uma Palavra especifica
+        /// </summary>
+        /// <param name="id">Código indentificador da palavra a ser alterada</param>
+        /// <param name="palavra">Obejto Palavra com dados para alteração</param>
+        /// <returns></returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("1.1")]
         [HttpPut("{id:int}", Name = "AtualizarPalavra")]
@@ -143,7 +162,11 @@ namespace MimicAPI.v1.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// Operação que desativa uma palavra do sistema
+        /// </summary>
+        /// <param name="id">Código identificador da palavra</param>
+        /// <returns></returns>
         [MapToApiVersion("1.1")]
         [HttpDelete("{id:int}", Name = "DeletarPalavra")]
         public ActionResult Deletar(int id)
